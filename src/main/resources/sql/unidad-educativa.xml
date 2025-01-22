@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cl.mineduc.sidep.unidadeducativaapi.mappers.UnidadEducativaMapper">
+    <resultMap id="unidadEducativaResultMap" type="cl.mineduc.sidep.unidadeducativaapi.model.UnidadEducativaModel">
+        <id property="id" column="pk_uned_id_unidad_educativa"/>
+        <result property="nombre" column="uned_nombre"/>
+        <result property="rbd" column="uned_rbd"/>
+        <result property="dvRbd" column="uned_dv_rbd"/>
+        <result property="codigoAreaTelefono" column="uned_codigo_area_telefono"/>
+        <result property="telefono" column="uned_telefono"/>
+        <result property="celular" column="uned_celular"/>
+        <result property="mail" column="uned_mail"/>
+        <result property="fechaInicioRo" column="uned_fecha_inicio_ro"/>
+        <result property="fechaTerminoRo" column="uned_fecha_termino_ro"/>
+        <result property="dependencia" column="uned_dependencia"/>
+        <result property="sitioWeb" column="uned_sitio_web"/>
+        <result property="softwarePropio" column="uned_software_propio"/>
+        <result property="autorizaIntercambioCorreo" column="uned_autoriza_intercambio_correo"/>
+        <result property="resolucion" column="uned_resolucion"/>
+        <result property="fechaResolucion" column="uned_fecha_resolucion"/>
+        <result property="codigoInstitucion" column="uned_codigo_institucion"/>
+        <result property="fechaCreacion" column="uned_fecha_creacion"/>
+        <result property="fechaActualizacion" column="uned_fecha_actualizacion"/>
+
+        <association property="programa" javaType="cl.mineduc.sidep.unidadeducativaapi.model.ProgramaModel">
+            <id property="id" column="pk_prog_id_programa"/>
+            <result property="nombre" column="prog_nombre"/>
+        </association>
+
+        <association property="codigoGeografico" javaType="cl.mineduc.sidep.unidadeducativaapi.model.CodigoGeograficoModel">
+            <association property="comuna" javaType="cl.mineduc.sidep.unidadeducativaapi.model.ComunaModel">
+                <id property="id" column="pk_comu_id_comuna"/>
+                <result property="nombre" column="comu_nombre"/>
+            </association>
+            <association property="provincia" javaType="cl.mineduc.sidep.unidadeducativaapi.model.ProvinciaModel">
+                <id property="id" column="pk_prov_id_provincia"/>
+                <result property="nombre" column="prov_nombre"/>
+            </association>
+            <association property="region" javaType="cl.mineduc.sidep.unidadeducativaapi.model.RegionModel">
+                <id property="id" column="pk_regi_id_region"/>
+                <result property="nombre" column="regi_nombre"/>
+            </association>
+        </association>
+
+        <association property="modalidad" javaType="cl.mineduc.sidep.unidadeducativaapi.model.ModalidadModel">
+            <id property="id" column="pk_moda_id_modalidad"/>
+            <result property="nombre" column="moda_nombre"/>
+        </association>
+
+        <association property="mecanismoFinanciamiento" javaType="cl.mineduc.sidep.unidadeducativaapi.model.MecanismoFinanciamientoModel">
+            <id property="id" column="pk_mefi_id_mecanismo_financiamiento"/>
+            <result property="nombre" column="mefi_nombre"/>
+        </association>
+
+        <association property="sostenedor" javaType="cl.mineduc.sidep.unidadeducativaapi.model.SostenedorModel">
+            <id property="id" column="pk_sost_id_sostenedor"/>
+            <result property="nombre" column="sost_nombre"/>
+        </association>
+
+        <association property="estadoUnidadEducativa" javaType="cl.mineduc.sidep.unidadeducativaapi.model.EstadoUnidadEducativaModel">
+            <id property="id" column="pk_eued_id_estado_unidad_educativa"/>
+            <result property="nombre" column="eued_nombre"/>
+        </association>
+
+        <association property="genero" javaType="cl.mineduc.sidep.unidadeducativaapi.model.GeneroModel">
+            <id property="id" column="pk_gene_id_genero"/>
+            <result property="nombre" column="gene_nombre"/>
+        </association>
+
+        <association property="estadoFuncionamientoEnsenianza" javaType="cl.mineduc.sidep.unidadeducativaapi.model.EstadoFuncionamientoEnsenianzaModel">
+            <id property="id" column="pk_efen_id_estado_funcionamiento_ensenianza"/>
+            <result property="nombre" column="efen_nombre_fecha_creacion"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectUnidadEducativa">
+        SELECT
+            ue.*,
+            p.pk_prog_id_programa,
+            p.prog_nombre,
+            c.pk_comu_id_comuna,
+            c.comu_nombre,
+            prov.pk_prov_id_provincia,
+            prov.prov_nombre,
+            r.pk_regi_id_region,
+            r.regi_nombre,
+            m.pk_moda_id_modalidad,
+            m.moda_nombre,
+            mf.pk_mefi_id_mecanismo_financiamiento,
+            mf.mefi_nombre,
+            s.pk_sost_id_sostenedor,
+            s.sost_nombre,
+            s.sost_rut,
+            s.sost_dv,
+            eue.pk_eued_id_estado_unidad_educativa,
+            eue.eued_nombre,
+            g.pk_gene_id_genero,
+            g.gene_nombre,
+            ef.pk_efen_id_estado_funcionamiento_ensenianza,
+            ef.efen_nombre_fecha_creacion
+        FROM unidad_educativa ue
+                 LEFT JOIN comuna c ON ue.fk_uned_id_comuna = c.pk_comu_id_comuna
+                 LEFT JOIN provincia prov ON c.fk_comu_id_provincia = prov.pk_prov_id_provincia
+                 LEFT JOIN region r ON prov.fk_prov_id_region = r.pk_regi_id_region
+                 LEFT JOIN programa p ON ue.fk_uned_id_programa = p.pk_prog_id_programa
+                 LEFT JOIN modalidad m ON ue.fk_uned_id_modalidad = m.pk_moda_id_modalidad
+                 LEFT JOIN mecanismo_financiamiento mf ON ue.fk_uned_id_mecanismo_financiamiento = mf.pk_mefi_id_mecanismo_financiamiento
+                 LEFT JOIN sostenedor s ON ue.fk_uned_id_sostenedor = s.pk_sost_id_sostenedor
+                 LEFT JOIN estado_unidad_educativa eue ON ue.fk_uned_id_estado_unidad_educativa = eue.pk_eued_id_estado_unidad_educativa
+                 LEFT JOIN genero g ON ue.fk_uned_id_genero = g.pk_gene_id_genero
+                 LEFT JOIN estado_funcionamiento_ensenianza ef ON ue.fk_uned_id_estado_funcionamiento_ensenianza = ef.pk_efen_id_estado_funcionamiento_ensenianza
+    </sql>
+
+    <select id="findAll" resultMap="unidadEducativaResultMap">
+        <include refid="selectUnidadEducativa" />
+    </select>
+
+    <select id="findById" resultMap="unidadEducativaResultMap" parameterType="java.lang.Long">
+        <include refid="selectUnidadEducativa" />
+        WHERE ue.pk_uned_id_unidad_educativa = #{id}
+    </select>
+
+    <select id="findByRbd" resultMap="unidadEducativaResultMap" parameterType="Long">
+        <include refid="selectUnidadEducativa" />
+        WHERE ue.uned_rbd = #{rbd}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="pk_uned_id_unidad_educativa"
+            parameterType="cl.mineduc.sidep.unidadeducativaapi.entities.UnidadEducativaEntity">
+        INSERT INTO unidad_educativa
+        (uned_nombre, uned_rbd, uned_dv_rbd, uned_codigo_area_telefono, uned_telefono,
+         uned_celular, uned_mail, uned_fecha_inicio_ro, uned_fecha_termino_ro, uned_dependencia,
+         uned_sitio_web, uned_software_propio, uned_autoriza_intercambio_correo, uned_resolucion,
+         uned_fecha_resolucion, uned_codigo_institucion, uned_fecha_creacion,
+         fk_uned_id_programa, fk_uned_id_comuna, fk_uned_id_modalidad, fk_uned_id_mecanismo_financiamiento,
+         fk_uned_id_sostenedor, fk_uned_id_estado_unidad_educativa, fk_uned_id_genero,
+         fk_uned_id_estado_funcionamiento_ensenianza)
+        VALUES (#{nombre}, #{rbd}, #{dvRbd}, #{codigoAreaTelefono}, #{telefono},
+                #{celular}, #{mail}, #{fechaInicioRo}, #{fechaTerminoRo}, #{dependencia},
+                #{sitioWeb}, #{softwarePropio}, #{autorizaIntercambioCorreo}, #{resolucion},
+                #{fechaResolucion}, #{codigoInstitucion}, CURRENT_TIMESTAMP,
+                #{programa}, #{comuna}, #{modalidad}, #{mecanismoFinanciamiento},
+                #{sostenedor}, #{estadoUnidadEducativa}, #{genero},
+                #{estadoFuncionamientoEnsenianza})
+    </insert>
+
+    <update id="update">
+        UPDATE unidad_educativa
+        SET uned_nombre = #{ue.nombre},
+            uned_dv_rbd = #{ue.dvRbd},
+            uned_codigo_area_telefono = #{ue.codigoAreaTelefono},
+            uned_telefono = #{ue.telefono},
+            uned_celular = #{ue.celular},
+            uned_mail = #{ue.mail},
+            uned_fecha_inicio_ro = #{ue.fechaInicioRo},
+            uned_fecha_termino_ro = #{ue.fechaTerminoRo},
+            uned_dependencia = #{ue.dependencia},
+            uned_sitio_web = #{ue.sitioWeb},
+            uned_software_propio = #{ue.softwarePropio},
+            uned_autoriza_intercambio_correo = #{ue.autorizaIntercambioCorreo},
+            uned_resolucion = #{ue.resolucion},
+            uned_fecha_resolucion = #{ue.fechaResolucion},
+            uned_codigo_institucion = #{ue.codigoInstitucion},
+            uned_fecha_actualizacion = CURRENT_TIMESTAMP,
+            fk_uned_id_programa = #{ue.programa},
+            fk_uned_id_comuna = #{ue.comuna},
+            fk_uned_id_modalidad = #{ue.modalidad},
+            fk_uned_id_mecanismo_financiamiento = #{ue.mecanismoFinanciamiento},
+            fk_uned_id_sostenedor = #{ue.sostenedor},
+            fk_uned_id_estado_unidad_educativa = #{ue.estadoUnidadEducativa},
+            fk_uned_id_genero = #{ue.genero},
+            fk_uned_id_estado_funcionamiento_ensenianza = #{ue.estadoFuncionamientoEnsenianza}
+        WHERE uned_rbd = #{rbd}
+    </update>
+
+    <select id="hasMecanismoFinanciamiento" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(pk_mefi_id_mecanismo_financiamiento) > 0 THEN 1 ELSE 0 END AS result
+        FROM mecanismo_financiamiento
+        WHERE pk_mefi_id_mecanismo_financiamiento = #{id}
+    </select>
+
+    <select id="hasEstadoUnidadEducativa" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(pk_eued_id_estado_unidad_educativa) > 0 THEN 1 ELSE 0 END AS result
+        FROM estado_unidad_educativa
+        WHERE pk_eued_id_estado_unidad_educativa = #{id}
+    </select>
+
+    <select id="hasGenero" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(pk_gene_id_genero) > 0 THEN 1 ELSE 0 END AS result
+        FROM genero
+        WHERE pk_gene_id_genero = #{id}
+    </select>
+
+    <select id="hasEstadoFuncionamientoEnsenianza" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(pk_efen_id_estado_funcionamiento_ensenianza) > 0 THEN 1 ELSE 0 END AS result
+        FROM estado_funcionamiento_ensenianza
+        WHERE pk_efen_id_estado_funcionamiento_ensenianza = #{id}
+    </select>
+
+    <select id="hasComuna" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(pk_comu_id_comuna) > 0 THEN 1 ELSE 0 END AS result
+        FROM comuna
+        WHERE pk_comu_id_comuna = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cl.mineduc.sidep.unidadeducativaapi.mappers.EstablecimientoMapper">
+    <resultMap id="establecimientoResultMap" type="cl.mineduc.sidep.unidadeducativaapi.model.EstablecimientoModel">
+        <id property="id" column="pk_esta_id_establecimiento"/>
+        <result property="direccion" column="esta_direccion"/>
+        <result property="direccionNumero" column="esta_direccion_numero"/>
+        <result property="direccionReferencia" column="esta_direccion_referencia"/>
+        <result property="codigoPostal" column="esta_codigo_postal"/>
+        <result property="latitud" column="esta_latitud"/>
+        <result property="longitud" column="esta_longitud"/>
+        <result property="tipologia" column="esta_tipologia"/>
+        <result property="modalidadAtencion" column="esta_modalidad_atencion"/>
+        <result property="fechaCreacion" column="esta_fecha_creacion"/>
+        <result property="fechaActualizacion" column="esta_fecha_actualizacion"/>
+
+        <association property="comuna" javaType="cl.mineduc.sidep.unidadeducativaapi.model.ComunaModel">
+            <id property="id" column="pk_comu_id_comuna"/>
+            <result property="nombre" column="comu_nombre"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectEstablecimientos">
+        SELECT
+            e.*,
+            c.pk_comu_id_comuna,
+            c.comu_nombre
+        FROM establecimiento e
+            LEFT JOIN comuna c ON e.fk_esta_id_comuna = c.pk_comu_id_comuna
+    </sql>
+
+    <select id="findAll" resultMap="establecimientoResultMap">
+        <include refid="selectEstablecimientos" />
+    </select>
+
+    <select id="findById" parameterType="Long" resultMap="establecimientoResultMap">
+        <include refid="selectEstablecimientos" />
+        WHERE e.pk_esta_id_establecimiento = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="pk_esta_id_establecimiento"
+            parameterType="cl.mineduc.sidep.unidadeducativaapi.entities.EstablecimientoEntity">
+        INSERT INTO establecimiento (
+            esta_direccion,
+            esta_direccion_numero,
+            esta_direccion_referencia,
+            esta_codigo_postal,
+            esta_latitud,
+            esta_longitud,
+            esta_tipologia,
+            esta_modalidad_atencion,
+            esta_fecha_creacion,
+            fk_esta_id_comuna
+        ) VALUES (
+                     #{direccion},
+                     #{direccionNumero},
+                     #{direccionReferencia},
+                     #{codigoPostal},
+                     #{latitud},
+                     #{longitud},
+                     #{tipologia},
+                     #{modalidadAtencion},
+                     CURRENT_TIMESTAMP,
+                     #{comuna}
+                 )
+    </insert>
+
+    <update id="update">
+        UPDATE establecimiento
+        SET
+            esta_direccion = #{e.direccion},
+            esta_direccion_numero = #{e.direccionNumero},
+            esta_direccion_referencia = #{e.direccionReferencia},
+            esta_codigo_postal = #{e.codigoPostal},
+            esta_latitud = #{e.latitud},
+            esta_longitud = #{e.longitud},
+            esta_tipologia = #{e.tipologia},
+            esta_modalidad_atencion = #{e.modalidadAtencion},
+            esta_fecha_actualizacion = CURRENT_TIMESTAMP,
+            fk_esta_id_comuna = #{e.comuna}
+        WHERE
+            pk_esta_id_establecimiento = #{id}
+    </update>
+
+    <select id="hasComuna" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(pk_comu_id_comuna) > 0 THEN 1 ELSE 0 END AS result
+        FROM comuna
+        WHERE pk_comu_id_comuna = #{id}
+    </select>
+
+</mapper>

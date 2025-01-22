@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cl.mineduc.sidep.unidadeducativaapi.mappers.FichaEstablecimientoMapper">
+    <resultMap id="fichaEstablecimiento" type="cl.mineduc.sidep.unidadeducativaapi.model.FichaEstablecimientoModel">
+        <id property="id" column="pk_fies_id_ficha_establecimiento"/>
+        <result property="superficieTerrenoM2" column="fies_superficie_terreno_m2"/>
+        <result property="superficieEdificadaM2" column="fies_superficie_edificada_m2"/>
+        <result property="numeroSalas" column="fies_numero_salas"/>
+        <result property="capacidadSala" column="fies_capacidad_sala"/>
+        <result property="capacidadNivel" column="fies_capacidad_nivel"/>
+        <result property="ruralidad" column="fies_ruralidad"/>
+        <result property="numeroPisos" column="fies_numero_pisos"/>
+        <result property="rolSii" column="fies_rol_sii"/>
+        <result property="fechaCreacion" column="fies_fecha_creacion"/>
+        <result property="fechaActualizacion" column="fies_fecha_actualizacion"/>
+
+        <association property="establecimiento" javaType="cl.mineduc.sidep.unidadeducativaapi.model.EstablecimientoModel">
+            <id property="id" column="pk_esta_id_establecimiento"/>
+            <result property="direccion" column="esta_direccion"/>
+            <result property="direccionNumero" column="esta_direccion_numero"/>
+            <result property="direccionReferencia" column="esta_direccion_referencia"/>
+            <result property="codigoPostal" column="esta_codigo_postal"/>
+            <result property="latitud" column="esta_latitud"/>
+            <result property="longitud" column="esta_longitud"/>
+            <result property="tipologia" column="esta_tipologia"/>
+            <result property="modalidadAtencion" column="esta_modalidad_atencion"/>
+            <result property="fechaCreacion" column="esta_fecha_creacion"/>
+            <result property="fechaActualizacion" column="esta_fecha_actualizacion"/>
+            <association property="comuna" javaType="cl.mineduc.sidep.unidadeducativaapi.model.ComunaModel">
+                <id property="id" column="pk_comu_id_comuna"/>
+                <result property="nombre" column="comu_nombre"/>
+                <result property="fechaCreacion" column="comu_fecha_creacion"/>
+                <result property="fechaActualizacion" column="comu_fecha_actualizacion"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <sql id="selectFichaEstablecimiento">
+        SELECT
+            f.*,
+            e.pk_esta_id_establecimiento,
+            e.esta_direccion,
+            e.esta_direccion_numero,
+            e.esta_direccion_referencia,
+            e.esta_codigo_postal,
+            e.esta_latitud,
+            e.esta_longitud,
+            e.esta_tipologia,
+            e.esta_modalidad_atencion,
+            e.esta_fecha_creacion,
+            e.esta_fecha_actualizacion,
+            c.pk_comu_id_comuna,
+            c.comu_nombre,
+            c.comu_fecha_creacion,
+            c.comu_fecha_actualizacion
+        FROM ficha_establecimiento f
+                 LEFT JOIN establecimiento e ON f.fk_fies_id_establecimiento = e.pk_esta_id_establecimiento
+                 LEFT JOIN comuna c ON e.fk_esta_id_comuna = c.pk_comu_id_comuna
+    </sql>
+
+    <select id="findAll" resultMap="fichaEstablecimiento">
+        <include refid="selectFichaEstablecimiento" />
+    </select>
+
+    <select id="findById" parameterType="Long" resultMap="fichaEstablecimiento">
+        <include refid="selectFichaEstablecimiento" />
+        WHERE f.pk_fies_id_ficha_establecimiento = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="pk_fies_id_ficha_establecimiento"
+            parameterType="cl.mineduc.sidep.unidadeducativaapi.entities.FichaEstablecimientoEntity">
+
+        INSERT INTO ficha_establecimiento (
+            fies_superficie_terreno_m2,
+            fies_superficie_edificada_m2,
+            fies_numero_salas,
+            fies_capacidad_sala,
+            fies_capacidad_nivel,
+            fies_ruralidad,
+            fies_numero_pisos,
+            fies_rol_sii,
+            fies_fecha_creacion,
+            fk_fies_id_establecimiento
+        )
+        VALUES (
+                   #{superficieTerrenoM2},
+                   #{superficieEdificadaM2},
+                   #{numeroSalas},
+                   #{capacidadSala},
+                   #{capacidadNivel},
+                   #{ruralidad},
+                   #{numeroPisos},
+                   #{rolSii},
+                   CURRENT_TIMESTAMP,
+                   #{establecimiento}
+               )
+    </insert>
+
+    <update id="update" parameterType="cl.mineduc.sidep.unidadeducativaapi.entities.FichaEstablecimientoEntity">
+        UPDATE ficha_establecimiento
+        SET
+            fies_superficie_terreno_m2 = #{fe.superficieTerrenoM2},
+            fies_superficie_edificada_m2 = #{fe.superficieEdificadaM2},
+            fies_numero_salas = #{fe.numeroSalas},
+            fies_capacidad_sala = #{fe.capacidadSala},
+            fies_capacidad_nivel = #{fe.capacidadNivel},
+            fies_ruralidad = #{fe.ruralidad},
+            fies_numero_pisos = #{fe.numeroPisos},
+            fies_rol_sii = #{fe.rolSii},
+            fies_fecha_actualizacion = CURRENT_TIMESTAMP,
+            fk_fies_id_establecimiento = #{fe.establecimiento}
+        WHERE
+            pk_fies_id_ficha_establecimiento = #{id}
+    </update>
+
+    <select id="hasEstablecimiento" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(pk_esta_id_establecimiento) > 0 THEN 1 ELSE 0 END AS result
+        FROM establecimiento
+        WHERE pk_esta_id_establecimiento = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cl.mineduc.sidep.unidadeducativaapi.mappers.ModalidadMapper">
+    <resultMap id="modalidadResultMap" type="cl.mineduc.sidep.unidadeducativaapi.model.ModalidadModel">
+        <id property="id" column="pk_moda_id_modalidad"/>
+        <result property="nombre" column="moda_nombre"/>
+    </resultMap>
+
+    <select id="findById" resultMap="modalidadResultMap" parameterType="Long">
+        SELECT pk_moda_id_modalidad, moda_nombre
+        FROM modalidad
+        WHERE pk_moda_id_modalidad = #{id}
+    </select>
+</mapper>

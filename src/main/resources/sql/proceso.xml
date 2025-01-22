@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cl.mineduc.sidep.unidadeducativaapi.mappers.ProcesoMapper">
+
+
+
+    <insert id="insert"
+            parameterType="cl.mineduc.sidep.unidadeducativaapi.entities.ProcesoEntity"
+            useGeneratedKeys="true"
+            keyColumn="pk_proceso_proc_id">
+        INSERT INTO sidep_procesos_log (
+        proc_servicio,
+        proc_status,
+        proc_operacion,
+        proc_fecha_proceso,
+        proc_mensaje
+        )
+        VALUES (
+        'UNIDAD_EDUCATIVA_API',
+        #{status},
+        #{operacion},
+        current_timestamp,
+        #{mensaje}
+        )
+    </insert>
+
+</mapper>

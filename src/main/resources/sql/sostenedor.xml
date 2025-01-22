@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cl.mineduc.sidep.unidadeducativaapi.mappers.SostenedorMapper">
+    <resultMap id="sostenedorResultMap" type="cl.mineduc.sidep.unidadeducativaapi.model.SostenedorModel">
+        <id property="id" column="pk_sost_id_sostenedor"/>
+        <result property="nombre" column="sost_nombre"/>
+        <result property="rut" column="sost_rut"/>
+        <result property="dv" column="sost_dv"/>
+    </resultMap>
+
+    <sql id="selectSostenedor">
+        SELECT
+            pk_sost_id_sostenedor,
+            sost_nombre,
+            sost_rut,
+            sost_dv
+        FROM
+            sostenedor
+    </sql>
+
+    <select id="findById" resultMap="sostenedorResultMap" parameterType="java.lang.Long">
+        <include refid="selectSostenedor"/>
+        WHERE pk_sost_id_sostenedor = #{id}
+    </select>
+
+</mapper>
