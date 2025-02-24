@@ -98,7 +98,7 @@
             g.pk_gene_id_genero,
             g.gene_nombre,
             ef.pk_efen_id_estado_funcionamiento_ensenianza,
-            ef.efen_nombre_fecha_creacion
+            ef.efen_fecha_creacion
         FROM unidad_educativa ue
                  LEFT JOIN comuna c ON ue.fk_uned_id_comuna = c.pk_comu_id_comuna
                  LEFT JOIN provincia prov ON c.fk_comu_id_provincia = prov.pk_prov_id_provincia
