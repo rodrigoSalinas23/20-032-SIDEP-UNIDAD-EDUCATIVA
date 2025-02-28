@@ -20,7 +20,6 @@ import java.util.List;
 public class EstablecimientoServiceImpl implements EstablecimientoService {
 
     private final EstablecimientoRepository establecimientoRepository;
-    private final ProcesoRepository procesoRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -35,6 +34,7 @@ public class EstablecimientoServiceImpl implements EstablecimientoService {
     }
 
     @Override
+    @Transactional
     public EstablecimientoModel save(EstablecimientoModel model) {
         this.validateForeignKeys(model);
 
@@ -44,16 +44,11 @@ public class EstablecimientoServiceImpl implements EstablecimientoService {
         model.setId(entity.getId());
         model.setFechaCreacion(entity.getFechaCreacion());
 
-        this.procesoRepository.save(ProcesoUtils.getProcesoEntity(
-                HttpStatus.OK.value(),
-                "POST - /establecimiento",
-                "OK"
-        ));
-
         return model;
     }
 
     @Override
+    @Transactional
     public EstablecimientoModel update(Long id, EstablecimientoModel model) {
         this.validateForeignKeys(model);
 
@@ -61,12 +56,6 @@ public class EstablecimientoServiceImpl implements EstablecimientoService {
         this.establecimientoRepository.update(id, entity);
 
         model.setId(id);
-
-        this.procesoRepository.save(ProcesoUtils.getProcesoEntity(
-                HttpStatus.OK.value(),
-                "PUT - /establecimiento",
-                "OK"
-        ));
 
         return model;
     }

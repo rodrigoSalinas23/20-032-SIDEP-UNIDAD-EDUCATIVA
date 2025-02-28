@@ -53,7 +53,6 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
     }
 
     @Override
-    @Transactional
     public void save(UnidadEducativaEntity unidadEducativaEntity) {
         try {
             unidadEducativaMapper.insert(unidadEducativaEntity);
@@ -64,7 +63,6 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
     }
 
     @Override
-    @Transactional
     public void update(Long rbd, UnidadEducativaEntity unidadEducativaEntity) {
         try {
             unidadEducativaMapper.update(rbd, unidadEducativaEntity);

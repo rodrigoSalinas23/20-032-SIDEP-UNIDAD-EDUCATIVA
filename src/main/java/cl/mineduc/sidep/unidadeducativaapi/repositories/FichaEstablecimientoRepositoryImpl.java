@@ -41,7 +41,6 @@ public class FichaEstablecimientoRepositoryImpl implements FichaEstablecimientoR
     }
 
     @Override
-    @Transactional
     public void save(FichaEstablecimientoEntity fichaEstablecimientoEntity) {
         try {
             this.fichaEstablecimientoMapper.insert(fichaEstablecimientoEntity);
@@ -52,7 +51,6 @@ public class FichaEstablecimientoRepositoryImpl implements FichaEstablecimientoR
     }
 
     @Override
-    @Transactional
     public void update(Long fichaEstablecimientoId, FichaEstablecimientoEntity fichaEstablecimientoEntity) {
         try {
             this.fichaEstablecimientoMapper.update(fichaEstablecimientoId, fichaEstablecimientoEntity);
