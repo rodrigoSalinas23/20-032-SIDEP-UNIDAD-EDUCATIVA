@@ -20,7 +20,7 @@ public class ProcesoRepositoryImpl implements ProcesoRepository {
         try {
             this.procesoMapper.insert(procesoEntity);
         } catch (DataAccessException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new SidepException("Error al insertar proceso: " + procesoEntity, e);
         }
     }

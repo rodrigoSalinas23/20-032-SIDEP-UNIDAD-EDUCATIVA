@@ -21,7 +21,7 @@ public class ModalidadRepositoryImpl implements ModalidadRepository {
         try {
             return this.modalidadMapper.findById(id);
         } catch (DataAccessException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new SidepException("Error al buscar modalidad por id: " + id, e);
         }
     }

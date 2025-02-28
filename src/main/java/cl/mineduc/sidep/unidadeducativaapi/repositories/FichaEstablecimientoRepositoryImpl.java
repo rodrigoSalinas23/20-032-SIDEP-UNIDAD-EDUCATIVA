@@ -25,8 +25,8 @@ public class FichaEstablecimientoRepositoryImpl implements FichaEstablecimientoR
         try {
             return this.fichaEstablecimientoMapper.findAll();
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
-            throw new UnidadEducativaException("Error al buscar todas las fichas de establecimiento");
+            log.error(e.getMessage(), e);
+            throw new UnidadEducativaException("Error al buscar todas las fichas de establecimiento", e);
         }
     }
 
@@ -35,8 +35,8 @@ public class FichaEstablecimientoRepositoryImpl implements FichaEstablecimientoR
         try {
             return this.fichaEstablecimientoMapper.findById(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
-            throw new UnidadEducativaException("Error al buscar ficha de establecimiento por id: " + id);
+            log.error(e.getMessage(), e);
+            throw new UnidadEducativaException("Error al buscar ficha de establecimiento por id: " + id, e);
         }
     }
 
@@ -45,8 +45,8 @@ public class FichaEstablecimientoRepositoryImpl implements FichaEstablecimientoR
         try {
             this.fichaEstablecimientoMapper.insert(fichaEstablecimientoEntity);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
-            throw new UnidadEducativaException("Error al guardar ficha de establecimiento");
+            log.error(e.getMessage(), e);;
+            throw new UnidadEducativaException("Error al guardar ficha de establecimiento", e);
         }
     }
 
@@ -55,8 +55,8 @@ public class FichaEstablecimientoRepositoryImpl implements FichaEstablecimientoR
         try {
             this.fichaEstablecimientoMapper.update(fichaEstablecimientoId, fichaEstablecimientoEntity);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
-            throw new UnidadEducativaException("Error al actualizar ficha de establecimiento");
+            log.error(e.getMessage(), e);
+            throw new UnidadEducativaException("Error al actualizar ficha de establecimiento", e);
         }
     }
 
@@ -65,8 +65,8 @@ public class FichaEstablecimientoRepositoryImpl implements FichaEstablecimientoR
         try {
             return this.fichaEstablecimientoMapper.hasEstablecimiento(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
-            throw new UnidadEducativaException("Error al buscar establecimiento por id: " + id);
+            log.error(e.getMessage(), e);
+            throw new UnidadEducativaException("Error al buscar establecimiento por id: " + id, e);
         }
     }
 }

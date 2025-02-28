@@ -24,7 +24,7 @@ public class EstablecimientoRepositoryImpl implements EstablecimientoRepository 
         try {
             return this.establecimientoMapper.findAll();
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new SidepException("Error al buscar establecimientos", e);
         }
     }
@@ -34,7 +34,7 @@ public class EstablecimientoRepositoryImpl implements EstablecimientoRepository 
         try {
             return this.establecimientoMapper.findById(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new SidepException("Error al buscar establecimiento", e);
         }
     }
@@ -44,7 +44,7 @@ public class EstablecimientoRepositoryImpl implements EstablecimientoRepository 
         try {
             this.establecimientoMapper.insert(establecimientoEntity);
         } catch (MyBatisSystemException ex){
-            log.error(ex.getMessage());
+            log.error(ex.getMessage(), ex);
             throw new SidepException("Error al guardar establecimiento", ex);
         }
     }
@@ -54,7 +54,7 @@ public class EstablecimientoRepositoryImpl implements EstablecimientoRepository 
         try {
             this.establecimientoMapper.update(id, establecimientoEntity);
         } catch (MyBatisSystemException ex){
-            log.error(ex.getMessage());
+            log.error(ex.getMessage(), ex);
             throw new SidepException("Error al actualizar establecimiento", ex);
         }
     }
@@ -64,7 +64,7 @@ public class EstablecimientoRepositoryImpl implements EstablecimientoRepository 
         try {
             return this.establecimientoMapper.hasComuna(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new SidepException("Error al verificar si establecimiento tiene comuna", e);
         }
     }

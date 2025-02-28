@@ -25,8 +25,8 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             return unidadEducativaMapper.findAll();
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
-            throw new UnidadEducativaException("Error al buscar todas las unidades educativas");
+            log.error(e.getMessage(), e);
+            throw new UnidadEducativaException("Error al buscar todas las unidades educativas", e);
         }
     }
 
@@ -35,7 +35,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             return unidadEducativaMapper.findById(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al buscar unidad educativa por id: " + id);
         }
     }
@@ -47,7 +47,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
             log.info("Resultado del mapper: {}", result);
             return result;
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al buscar unidad educativa por rbd: " + rbd);
         }
     }
@@ -57,7 +57,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             unidadEducativaMapper.insert(unidadEducativaEntity);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al crear unidad educativa", e );
         }
     }
@@ -67,7 +67,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             unidadEducativaMapper.update(rbd, unidadEducativaEntity);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al actualizar unidad educativa", e);
         }
     }
@@ -77,7 +77,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             return this.unidadEducativaMapper.hasMecanismoFinanciamiento(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al buscar mecanismo de financiamiento", e);
         }
     }
@@ -87,7 +87,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             return this.unidadEducativaMapper.hasEstadoUnidadEducativa(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al buscar estado de unidad educativa", e);
         }
     }
@@ -97,7 +97,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             return this.unidadEducativaMapper.hasGenero(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al buscar genero", e);
         }
     }
@@ -107,7 +107,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             return this.unidadEducativaMapper.hasEstadoFuncionamientoEnsenianza(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al buscar estado de funcionamiento de enseñanza", e);
         }
     }
@@ -117,7 +117,7 @@ public class UnidadEducativaRepositoryImpl implements UnidadEducativaRepository 
         try {
             return this.unidadEducativaMapper.hasComuna(id);
         } catch (MyBatisSystemException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new UnidadEducativaException("Error al buscar comuna", e);
         }
     }

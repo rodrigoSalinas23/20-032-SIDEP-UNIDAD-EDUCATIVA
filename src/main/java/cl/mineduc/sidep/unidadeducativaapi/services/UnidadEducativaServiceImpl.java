@@ -2,10 +2,7 @@ package cl.mineduc.sidep.unidadeducativaapi.services;
 
 import cl.mineduc.sidep.unidadeducativaapi.entities.UnidadEducativaEntity;
 import cl.mineduc.sidep.unidadeducativaapi.exceptions.UnidadEducativaException;
-import cl.mineduc.sidep.unidadeducativaapi.model.ModalidadModel;
-import cl.mineduc.sidep.unidadeducativaapi.model.ProgramaModel;
-import cl.mineduc.sidep.unidadeducativaapi.model.SostenedorModel;
-import cl.mineduc.sidep.unidadeducativaapi.model.UnidadEducativaModel;
+import cl.mineduc.sidep.unidadeducativaapi.model.*;
 import cl.mineduc.sidep.unidadeducativaapi.repositories.ProcesoRepository;
 import cl.mineduc.sidep.unidadeducativaapi.repositories.ProgramaRepository;
 import cl.mineduc.sidep.unidadeducativaapi.repositories.SostenedorRepository;
@@ -90,64 +87,92 @@ public class UnidadEducativaServiceImpl implements UnidadEducativaService {
      * @param model
      */
     private void validateForeignKeys(UnidadEducativaModel model) {
-        if (model.getSostenedor() != null && model.getSostenedor().getId() != null) {
-            Long sostenedorId = model.getSostenedor().getId();
+
+        this.validateSostenedor(model.getSostenedor());
+        this.validateComuna(model.getCodigoGeografico());
+        this.validateModalidad(model.getModalidad());
+        this.validatePrograma(model.getPrograma());
+        this.validateMecanismoFinanciamiento(model.getMecanismoFinanciamiento());
+        this.validateEstadoUnidadEducativa(model.getEstadoUnidadEducativa());
+        this.validateGenero(model.getGenero());
+        this.validateEstadoFuncionamientoEnseniaza(model.getEstadoFuncionamientoEnsenianza());
+
+    }
+
+
+    private void validateSostenedor(SostenedorModel model) {
+        if (model != null && model.getId() != null) {
+            Long sostenedorId = model.getId();
             if (sostenedorRepository.findById(sostenedorId) == null) {
                 log.error("El sostenedor con ID {} no existe", sostenedorId);
                 throw new UnidadEducativaException("El sostenedor con ID " + sostenedorId + " no existe");
             }
         }
+    }
 
-        if (model.getCodigoGeografico() != null && model.getCodigoGeografico().getComuna() != null && model.getCodigoGeografico().getComuna().getId() != null) {
-            Long comunaId = model.getCodigoGeografico().getComuna().getId();
+    private void validateComuna(CodigoGeograficoModel model) {
+        if (model != null && model.getComuna() != null && model.getComuna().getId() != null) {
+            Long comunaId = model.getComuna().getId();
             if (Boolean.FALSE.equals(unidadEducativaRepository.hasComuna(comunaId))) {
                 log.error("La comuna con ID {} no existe", comunaId);
                 throw new UnidadEducativaException("La comuna con ID " + comunaId + " no existe");
             }
         }
+    }
 
-        if (model.getModalidad() != null && model.getModalidad().getId() != null) {
-            Long modalidadId = model.getModalidad().getId();
+    private void validateModalidad( ModalidadModel model ) {
+        if (model != null && model.getId() != null) {
+            Long modalidadId = model.getId();
             if (modalidadService.findById(modalidadId) == null) {
                 log.error("La modalidad con ID {} no existe", modalidadId);
                 throw new UnidadEducativaException("La modalidad con ID " + modalidadId + " no existe");
             }
         }
+    }
 
-        if (model.getPrograma() != null && model.getPrograma().getId() != null) {
-            Long programaId = model.getPrograma().getId();
+    private void validatePrograma(ProgramaModel model) {
+        if (model != null && model.getId() != null) {
+            Long programaId = model.getId();
             if (programaRepository.findById(programaId) == null) {
                 log.error("El programa con ID {} no existe", programaId);
                 throw new UnidadEducativaException("El programa con ID " + programaId + " no existe");
             }
         }
+    }
 
-        if (model.getMecanismoFinanciamiento() != null && model.getMecanismoFinanciamiento().getId() != null) {
-            Long mecanismoFinanciamientoId = model.getMecanismoFinanciamiento().getId();
+    private void validateMecanismoFinanciamiento(MecanismoFinanciamientoModel model) {
+        if (model != null && model.getId() != null) {
+            Long mecanismoFinanciamientoId = model.getId();
             if (Boolean.FALSE.equals(unidadEducativaRepository.hasMecanismoFinanciamiento(mecanismoFinanciamientoId))) {
                 log.error("El mecanismo de financiamiento con ID {} no existe", mecanismoFinanciamientoId);
                 throw new UnidadEducativaException("El mecanismo de financiamiento con ID " + mecanismoFinanciamientoId + " no existe");
             }
         }
+    }
 
-        if (model.getEstadoUnidadEducativa() != null && model.getEstadoUnidadEducativa().getId() != null) {
-            Long estadoUnidadEducativaId = model.getEstadoUnidadEducativa().getId();
+    private void validateEstadoUnidadEducativa(EstadoUnidadEducativaModel model) {
+        if (model != null && model.getId() != null) {
+            Long estadoUnidadEducativaId = model.getId();
             if (Boolean.FALSE.equals(unidadEducativaRepository.hasEstadoUnidadEducativa(estadoUnidadEducativaId))) {
                 log.error("El estado de la unidad educativa con ID {} no existe", estadoUnidadEducativaId);
                 throw new UnidadEducativaException("El estado de la unidad educativa con ID " + estadoUnidadEducativaId + " no existe");
             }
         }
+    }
 
-        if (model.getGenero() != null && model.getGenero().getId() != null) {
-            Long generoId = model.getGenero().getId();
+    private void validateGenero(GeneroModel model) {
+        if (model!= null && model.getId() != null) {
+            Long generoId = model.getId();
             if (Boolean.FALSE.equals(unidadEducativaRepository.hasGenero(generoId))) {
                 log.error("El género con ID {} no existe", generoId);
                 throw new UnidadEducativaException("El género con ID " + generoId + " no existe");
             }
         }
+    }
 
-        if (model.getEstadoFuncionamientoEnsenianza() != null && model.getEstadoFuncionamientoEnsenianza().getId() != null) {
-            Long estadoFuncionamientoEnsenianzaId = model.getEstadoFuncionamientoEnsenianza().getId();
+    private void validateEstadoFuncionamientoEnseniaza(EstadoFuncionamientoEnsenianzaModel model) {
+        if (model != null && model.getId() != null) {
+            Long estadoFuncionamientoEnsenianzaId = model.getId();
             if (Boolean.FALSE.equals(unidadEducativaRepository.hasEstadoFuncionamientoEnsenianza(estadoFuncionamientoEnsenianzaId))) {
                 log.error("El estado de funcionamiento de la enseñanza con ID {} no existe", estadoFuncionamientoEnsenianzaId);
                 throw new UnidadEducativaException("El estado de funcionamiento de la enseñanza con ID " + estadoFuncionamientoEnsenianzaId + " no existe");

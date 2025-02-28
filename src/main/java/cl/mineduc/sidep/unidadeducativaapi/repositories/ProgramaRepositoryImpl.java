@@ -21,7 +21,7 @@ public class ProgramaRepositoryImpl implements ProgramaRepository {
         try {
             return this.programaMapper.findById(id);
         } catch (DataAccessException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new SidepException("Error al buscar programa por id: " + id, e);
         }
     }
