@@ -40,7 +40,6 @@ public class EstablecimientoRepositoryImpl implements EstablecimientoRepository 
     }
 
     @Override
-    @Transactional
     public void save(EstablecimientoEntity establecimientoEntity) {
         try {
             this.establecimientoMapper.insert(establecimientoEntity);
@@ -51,7 +50,6 @@ public class EstablecimientoRepositoryImpl implements EstablecimientoRepository 
     }
 
     @Override
-    @Transactional
     public void update(Long id, EstablecimientoEntity establecimientoEntity) {
         try {
             this.establecimientoMapper.update(id, establecimientoEntity);

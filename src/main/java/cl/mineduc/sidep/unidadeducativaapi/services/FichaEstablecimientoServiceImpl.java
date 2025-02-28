@@ -21,7 +21,6 @@ import java.util.List;
 public class FichaEstablecimientoServiceImpl implements FichaEstablecimientoService {
 
     private final FichaEstablecimientoRepository fichaEstablecimientoRepository;
-    private final ProcesoRepository procesoRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -35,6 +34,7 @@ public class FichaEstablecimientoServiceImpl implements FichaEstablecimientoServ
     }
 
     @Override
+    @Transactional
     public FichaEstablecimientoModel save(FichaEstablecimientoModel model) {
         validateForeignKeys(model);
 
@@ -44,16 +44,11 @@ public class FichaEstablecimientoServiceImpl implements FichaEstablecimientoServ
         model.setId(entity.getId());
         model.setFechaCreacion(entity.getFechaCreacion());
 
-        this.procesoRepository.save(ProcesoUtils.getProcesoEntity(
-                HttpStatus.OK.value(),
-                "POST - /ficha-establecimiento",
-                "OK"
-        ));
-
         return model;
     }
 
     @Override
+    @Transactional
     public FichaEstablecimientoModel update(Long fichaEstablecimiento, FichaEstablecimientoModel fichaEstablecimientoModel) {
         validateForeignKeys(fichaEstablecimientoModel);
 
@@ -62,12 +57,6 @@ public class FichaEstablecimientoServiceImpl implements FichaEstablecimientoServ
 
         fichaEstablecimientoModel.setId(fichaEstablecimiento);
         fichaEstablecimientoModel.setFechaActualizacion(entity.getFechaActualizacion());
-
-        this.procesoRepository.save(ProcesoUtils.getProcesoEntity(
-                HttpStatus.OK.value(),
-                "PUT - /ficha-establecimiento/",
-                "OK"
-        ));
 
         return fichaEstablecimientoModel;
     }

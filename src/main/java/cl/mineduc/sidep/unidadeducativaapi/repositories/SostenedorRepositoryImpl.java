@@ -4,6 +4,7 @@ import cl.mineduc.sidep.unidadeducativaapi.mappers.SostenedorMapper;
 import cl.mineduc.sidep.unidadeducativaapi.model.SostenedorModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,7 +18,7 @@ public class SostenedorRepositoryImpl implements SostenedorRepository {
     public SostenedorModel findById(Long id) {
         try {
             return this.sostenedorMapper.findById(id);
-        } catch (Exception e) {
+        } catch (MyBatisSystemException e) {
             log.error("Error al buscar sostenedor por id: {}", id, e);
             return null;
         }

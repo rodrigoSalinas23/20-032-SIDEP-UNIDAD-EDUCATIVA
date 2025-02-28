@@ -50,6 +50,7 @@ public class UnidadEducativaServiceImpl implements UnidadEducativaService {
     }
 
     @Override
+    @Transactional
     public UnidadEducativaModel save(UnidadEducativaModel model) {
         validateForeignKeys(model);
 
@@ -59,16 +60,11 @@ public class UnidadEducativaServiceImpl implements UnidadEducativaService {
         model.setId(entity.getId());
         model.setFechaCreacion(entity.getFechaCreacion());
 
-        procesoRepository.save(ProcesoUtils.getProcesoEntity(
-                HttpStatus.OK.value(),
-                "POST - /unidad-educativa",
-                "OK"
-        ));
-
         return model;
     }
 
     @Override
+    @Transactional
     public UnidadEducativaModel update(Long rbd, UnidadEducativaModel model) {
         UnidadEducativaModel educativaModel = this.unidadEducativaRepository.findByRbd(rbd);
         if (educativaModel == null) {
@@ -84,12 +80,6 @@ public class UnidadEducativaServiceImpl implements UnidadEducativaService {
         model.setId(entity.getId());
         model.setFechaCreacion(entity.getFechaCreacion());
         model.setFechaActualizacion(entity.getFechaActualizacion());
-
-        procesoRepository.save(ProcesoUtils.getProcesoEntity(
-                HttpStatus.OK.value(),
-                "PUT - /unidad-educativa",
-                "OK"
-        ));
 
         return model;
     }
